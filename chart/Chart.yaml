@@ -1,0 +1,9 @@
+apiVersion: v2
+name: storageApp
+description: A Helm chart that deploys the Longhorn storage application.
+type: application
+version: "0.1.0"
+dependencies:
+- name: longhorn
+  version: v1.9.0
+  repository: https://charts.longhorn.io/

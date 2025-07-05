@@ -1,0 +1,27 @@
+namespace: longhorn-system
+
+dashboard:
+  enabled: true
+  ingressUrl: longhorn.example.com
+  externalCert:
+    name: "longhorn-example-tls"
+    remoteSecretName: "longhorn-example-tls"
+    remoteSecretStore: "kubernetes"
+
+longhorn:
+  # Disable on installation to prevent hanging on the pre update hook
+  preUpgradeChecker:
+    jobEnabled: true
+  persistence:
+    defaultClass: true
+    defaultClassReplicaCount: 2
+    migratable: true
+  # (Options: "NFS", "CIFS", "AWS", "GCP", "AZURE")
+  # defaultBackupStore:
+  #   backupTarget: {{ .Values.longhorn.defaultBackupTarget }}
+  #   backupTargetCredentialSecret: {{ .Values.longhorn.defaultBackupTargetCredentialSecret }}
+  longhornUI:
+    replicas: 1
+  # service:
+  #   ui:
+  #     type: {{ .Values.longhorn.dashboard.serviceType }}
