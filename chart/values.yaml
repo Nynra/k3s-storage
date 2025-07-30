@@ -1,30 +1,71 @@
-namespace: longhorn-system
+global:
+  # Labels and annotations that will be applied to all resources created by the chart.
+  commonAnnotations: {}
+  commonLabels: {}
+
+# Enable the deployment of the resources defined in this chart. If set to false only the dependancies
+# will be deployed.
+enabled: true
+
+namespace: 
+  # Wheter to create a namespace for the chart resources.
+  enabled: true
+  # The name of the namespace to create or use.
+  name: longhorn-system
+  # The labels and annotations to apply to the namespace manifest.
+  commonLabels: {}
+  commonAnnotations: {}
 
 dashboard:
+  # Enable the Longhorn dashboard.
   enabled: true
+
+  # Labels and annotations added to the ingress and certificate resources.
+  commonAnnotations: {}
+  commonLabels: {}
+
+  # Longhorn dashboard ingress url
   ingressUrl: longhorn.example.com
+
+  # Name of the secret that contains the TLS certificate for the Longhorn dashboard ingress.
+  certName: "longhorn-example-tls"
   externalCert:
-    name: "longhorn-example-tls"
-    remoteSecretName: "longhorn-example-tls"
-    remoteSecretStore: "kubernetes"
+    # Enable the use of an external TLS certificate for the Longhorn dashboard ingress.
+    # If set to false the chart will assume that the namespace already contains a secret with the name
+    # specified in `certName` containing the TLS certificate and private key.
+    enabled: true
+
+    # Name of the secret in the secret store that contains the TLS certificate and private key.
+    secretName: "longhorn-example-tls"
+
+    # Secret store name and type.
+    # The secret store must be configured in the cluster to allow the chart to use it.
+    secretStore: "kubernetes"
+    secretStoreType: "ClusterSecretStore"
 
 longhorn:
   # Disable on installation to prevent hanging on the pre update hook
   preUpgradeChecker:
     jobEnabled: true
   persistence:
+    # Assuming k3s was installed with `--disable-local-storage` this is all we need to do
+    # to make longhorn use the default storage class.
     defaultClass: true
+
     defaultClassReplicaCount: 2
     migratable: true
+
   # (Options: "NFS", "CIFS", "AWS", "GCP", "AZURE")
   # defaultBackupStore:
   #   backupTarget: {{ .Values.longhorn.defaultBackupTarget }}
   #   backupTargetCredentialSecret: {{ .Values.longhorn.defaultBackupTargetCredentialSecret }}
+
   longhornUI:
     replicas: 1
   # service:
   #   ui:
   #     type: {{ .Values.longhorn.dashboard.serviceType }}
+
   metrics:
     serviceMonitor:
       # -- Setting that allows the creation of a Prometheus ServiceMonitor resource for Longhorn Manager components.
