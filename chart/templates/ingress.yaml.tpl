@@ -25,7 +25,10 @@ spec:
       {{- if .Values.dashboard.middlewares }}
       middlewares:
         {{- range .Values.dashboard.middlewares }}
-        - name: {{ . | quote }}
+        - name: {{ .name | quote }}
+          {{- if .namespace }}
+          namespace: {{ .namespace | quote }}
+          {{- end }}
         {{- end }}
       {{- end }}
       services:

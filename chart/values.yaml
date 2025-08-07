@@ -19,7 +19,8 @@ dashboard:
 
   # Middlewares to apply to the Longhorn dashboard ingress.
   middlewares: 
-    - traefik-default-chain
+    - name: traefik-default-chain
+      namespace: default
 
   # Name of the secret that contains the TLS certificate for the Longhorn dashboard ingress.
   certName: "longhorn-example-tls"
