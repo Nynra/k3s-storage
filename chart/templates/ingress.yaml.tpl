@@ -24,7 +24,9 @@ spec:
       kind: Rule
       {{- if .Values.dashboard.middlewares }}
       middlewares:
-        {{- toYaml .Values.dashboard.middlewares | nindent 8 }}
+        {{- range .Values.dashboard.middlewares }}
+        - name: {{ . | quote }}
+        {{- end }}
       {{- end }}
       services:
         - name: longhorn-frontend
