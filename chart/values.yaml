@@ -7,25 +7,19 @@ global:
 # will be deployed.
 enabled: true
 
-namespace: 
-  # Wheter to create a namespace for the chart resources.
-  enabled: true
-  # The name of the namespace to create or use.
-  name: longhorn-system
-  # The labels and annotations to apply to the namespace manifest.
-  commonLabels: {}
-  commonAnnotations: {}
-
 dashboard:
   # Enable the Longhorn dashboard.
   enabled: true
 
-  # Labels and annotations added to the ingress and certificate resources.
-  commonAnnotations: {}
-  commonLabels: {}
-
   # Longhorn dashboard ingress url
   ingressUrl: longhorn.example.com
+
+  # The entrypoint to use for the Longhorn dashboard ingress.
+  entrypoint: websecure
+
+  # Middlewares to apply to the Longhorn dashboard ingress.
+  middlewares: 
+    - traefik-default-chain
 
   # Name of the secret that contains the TLS certificate for the Longhorn dashboard ingress.
   certName: "longhorn-example-tls"
